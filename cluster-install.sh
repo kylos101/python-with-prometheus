@@ -10,3 +10,8 @@ helm install metrics prometheus-community/prometheus
 # LOGGING
 helm upgrade --install loki-stack grafana/loki-stack --namespace default --set promtail.enabled=true \
   --set grafana.enabled=true 
+
+# our app
+kubectl apply -f rbac.yaml
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
