@@ -11,4 +11,5 @@ curl http://localhost:5000/metrics
 # For debuggin'
 kubectl port-forward service/loki-stack-grafana 3000:80 &
 GRAFANA=$(kubectl get secret loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
-echo $GRAFANA
+echo $GRAFANA # log in with admin and the password this echoes
+# http://localhost:3000/explore?orgId=1&left=%5B%22now-5m%22,%22now%22,%22Loki%22,%7B%22expr%22:%22%7Bapp%3D%5C%22python-with-prometheus%5C%22%7D%22%7D%5D

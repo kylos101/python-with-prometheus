@@ -21,7 +21,7 @@ spec:
       containers:
         - name: python-with-prometheus
           imagePullPolicy: Always
-          image: kylos101/python-with-prometheus:0.0.17
+          image: kylos101/python-with-prometheus:1.0.0
           ports:
             - containerPort: 5000
           # Necessary to see stderr output

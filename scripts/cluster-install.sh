@@ -35,7 +35,7 @@ helm upgrade --install loki-stack grafana/loki-stack --namespace default --set p
 # App setup
 
 # Build and push the image
-# ./scripts/image-build.sh # won't work unless you have a token to... docker push kylos101/python-with-prometheus:tagname
+./scripts/image-build.sh # make sure you've pointed at your own Docker Repo...
 
 # Allow pods to use the Kubernetes API to list pods
 kubectl apply -f ./k8s_resources/rbac.yaml
