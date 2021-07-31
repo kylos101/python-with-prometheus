@@ -5,4 +5,4 @@ kubectl port-forward service/loki-stack-grafana 3000:80 &
 
 # Logging password
 GRAFANA=$(kubectl get secret loki-stack-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
-echo -n $GRAFANA
+echo $GRAFANA
