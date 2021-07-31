@@ -9,8 +9,8 @@ import sys
 import traceback
 import threading
 
-g = Gauge('running_pod_total', 'The number of running pods now')
-c = Counter('times_app_endpoint_accessed', 'The total number of times the app was accessed')
+g = Gauge('running_pods', 'The number of running pods now')
+c = Counter('app_hello_world', 'Hello World accessed')
 app = Flask(__name__)
 
 @app.route("/")
@@ -32,13 +32,13 @@ def get_running_pod_total():
     items = v1.list_pod_for_all_namespaces(watch=False).items
     value = 0
     for i in items:
+        # i is a https://github.com/kubernetes-client/python/blob/master/kubernetes/docs/V1Pod.md
         if i.status.phase == "Running":
             value += 1
     return value
     
 def set_gauge():    
     value = get_running_pod_total()
-    # print(f'The value is {value}', file=sys.stderr)
     g.set(value)
     while True:
         time.sleep(1)     
