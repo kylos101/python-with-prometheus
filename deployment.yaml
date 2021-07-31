@@ -16,14 +16,14 @@ spec:
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/path: /metrics
-        prometheus.io/port: "8090"
+        prometheus.io/port: "5000"
     spec:
       containers:
         - name: python-with-prometheus
           imagePullPolicy: Always
           image: kylos101/python-with-prometheus:0.0.17
           ports:
-            - containerPort: 8090
+            - containerPort: 5000
           # Necessary to see stderr output
           env:
           - name: PYTHONUNBUFFERED

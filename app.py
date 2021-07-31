@@ -1,10 +1,27 @@
 # from flask import Flask
-from prometheus_client import start_http_server, Gauge
+from prometheus_client import Gauge, Counter, make_wsgi_app
 from kubernetes import client, config
+from flask import Flask
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.serving import run_simple
 import time
 import sys
+import traceback
+import threading
 
-g = Gauge('running_pod_total', 'The number of running pods')
+g = Gauge('running_pod_total', 'The number of running pods now')
+c = Counter('times_app_endpoint_accessed', 'The total number of times the app was accessed')
+app = Flask(__name__)
+
+@app.route("/")
+@c.count_exceptions()
+def hello():
+    c.inc()
+    return "Hello, World!"
+
+with c.count_exceptions():
+    e = traceback.format_exc()
+    print(e, file=sys.stderr)
 
 def get_running_pod_total():
     config.load_incluster_config()
@@ -12,27 +29,24 @@ def get_running_pod_total():
     
     # requires rbac
     # https://github.com/kubernetes-client/python/blob/master/examples/in_cluster_config.py
-    ret = v1.list_pod_for_all_namespaces(watch=False)
-    return len(ret.items)
+    items = v1.list_pod_for_all_namespaces(watch=False).items
+    value = 0
+    for i in items:
+        if i.status.phase == "Running":
+            value += 1
+    return value
     
-def set_metrics():    
+def set_gauge():    
     value = get_running_pod_total()
-    print(f'The value is {value}', file=sys.stderr)
+    # print(f'The value is {value}', file=sys.stderr)
     g.set(value)
-
-def get_secret(path: str) -> str:
-    """Get a secret from a file."""
-    location = path
-    with open(location, "r") as fo:
-        line = fo.readline().strip()
-    return line
-
-# Start up the server to expose the metrics.
-if __name__ == '__main__':
-    # Start up the server to expose the metrics.
-    print("Starting up...", file=sys.stderr)
-    set_metrics()
-    start_http_server(port=8090,addr='0.0.0.0')
     while True:
         time.sleep(1)     
-        set_metrics()
+        set_gauge()
+
+# Init
+print("Starting up...", file=sys.stderr)
+th = threading.Thread(target=set_gauge)
+th.start()
+dispatcher = DispatcherMiddleware(app.wsgi_app, {"/metrics": make_wsgi_app()})
+run_simple(hostname="0.0.0.0", port=5000, application=dispatcher)

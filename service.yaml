@@ -10,7 +10,3 @@ spec:
       port: 5000
       targetPort: 5000
       name: app
-    - protocol: TCP
-      port: 8090
-      targetPort: 8090
-      name: metrics
