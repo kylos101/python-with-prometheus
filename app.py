@@ -1,38 +1,38 @@
 # from flask import Flask
 from prometheus_client import start_http_server, Gauge
-import requests
+from kubernetes import client, config
 import time
 import sys
-import traceback
+
+g = Gauge('running_pod_total', 'The number of running pods')
 
 def get_running_pod_total():
-    # limited to the default namespace for now...
-    # https://v1-18.docs.kubernetes.io/docs/reference/generated/kubernetes-api/v1.18/#podlist-v1-core
+    config.load_incluster_config()
+    v1 = client.CoreV1Api()
     
-    items = 0
-    try:
-        r = requests.get('https://kubernetes.default.svc.cluster.local/api/v1/namespaces/default/pods')
-        r.raise_for_status()
-        response = r.json()
-        items = len(response["items"])
-    except Exception:
-        msg = traceback.format_exc()
-        print(msg, file=sys.stderr)
-    finally:
-        return items
-
-def set_metrics():
-    g = Gauge('running_pod_total', 'The number of running pods')
+    # requires rbac
+    # https://github.com/kubernetes-client/python/blob/master/examples/in_cluster_config.py
+    ret = v1.list_pod_for_all_namespaces(watch=False)
+    return len(ret.items)
+    
+def set_metrics():    
     value = get_running_pod_total()
     print(f'The value is {value}', file=sys.stderr)
     g.set(value)
 
+def get_secret(path: str) -> str:
+    """Get a secret from a file."""
+    location = path
+    with open(location, "r") as fo:
+        line = fo.readline().strip()
+    return line
+
 # Start up the server to expose the metrics.
 if __name__ == '__main__':
     # Start up the server to expose the metrics.
+    print("Starting up...", file=sys.stderr)
     set_metrics()
     start_http_server(port=8090,addr='0.0.0.0')
     while True:
-        time.sleep(0.001)
-
-
+        time.sleep(1)     
+        set_metrics()
