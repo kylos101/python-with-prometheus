@@ -1,3 +1,8 @@
+# exit when any command fails
+set -e
+
+pushd ./app
+
 # build our image
 IMAGE=$(docker build -q -t python-with-prometheus . | cut -d: -f2)
 
@@ -12,3 +17,5 @@ docker push kylos101/python-with-prometheus:$VERSION
 # Use the new image
 sleep 3
 kubectl rollout restart deployments/python-with-prometheus
+
+popd

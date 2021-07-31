@@ -4,7 +4,9 @@
 kubectl port-forward svc/metrics-prometheus-server 8082:80 &
 
 # Inspect http://localhost:5000/metrics or call the API listening on http://localhost:5000
-kubectl port-forward svc/slytherin-svc 5000:5000
+kubectl port-forward svc/slytherin-svc 5000:5000 &
+curl http://localhost:5000
+curl http://localhost:5000/metrics
 
 # For debuggin'
 kubectl port-forward service/loki-stack-grafana 3000:80 &
