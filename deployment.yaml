@@ -21,6 +21,10 @@ spec:
       containers:
         - name: python-with-prometheus
           imagePullPolicy: Always
-          image: kylos101/python-with-prometheus:0.0.16
+          image: kylos101/python-with-prometheus:0.0.17
           ports:
             - containerPort: 8090
+          # Necessary to see stderr output
+          env:
+          - name: PYTHONUNBUFFERED
+            value: "1"
