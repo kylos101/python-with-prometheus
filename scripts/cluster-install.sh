@@ -8,9 +8,9 @@ curl -sLS https://get.arkade.dev | sudo sh
 ark get helm
 ark get k3d
 ark get kubectx
-sudo mv /home/kylos/.arkade/bin/helm /usr/local/bin/
-sudo mv /home/kylos/.arkade/bin/k3d /usr/local/bin/
-sudo mv /home/kylos/.arkade/bin/kubectx /usr/local/bin/
+sudo mv $HOME/.arkade/bin/helm /usr/local/bin/
+sudo mv $HOME/.arkade/bin/k3d /usr/local/bin/
+sudo mv $HOME/.arkade/bin/kubectx /usr/local/bin/
 
 #
 # Test cluster setup

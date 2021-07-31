@@ -21,6 +21,7 @@ spec:
       containers:
         - name: python-with-prometheus
           imagePullPolicy: Always
+          # Point this at your Docker Repo
           image: kylos101/python-with-prometheus:1.0.0
           ports:
             - containerPort: 5000
