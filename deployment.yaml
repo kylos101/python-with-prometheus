@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: python-with-prometheus
+ labels:
+   app: python-with-prometheus
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     app: python-with-prometheus
+ template:
+   metadata:
+     labels:
+       app: python-with-prometheus
+   spec:
+     containers:
+     - name: python-with-prometheus
+       imagePullPolicy: Always
+       image: kylos101/python-with-prometheus:0.0.1
+       ports:
+       - containerPort: 5000

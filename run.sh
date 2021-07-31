@@ -1,12 +1,12 @@
 # build our image
-docker build -t python-and-prometheus .
+docker build -t python-with-prometheus .
 
 # Uncomment me to test the image locally
-docker run -p 8080:5000 -it --rm --name slytherin-slimes python-and-prometheus
+# docker run -p 8080:5000 -it --rm --name slytherin-slimes python-with-prometheus
 
 # Prepare and push to a Docker Registry
-# docker tag python-and-prometheus kylos101/python-with-prometheus:0.0.1
-# docker push kylos101/python-with-prometheus:0.0.1
+docker tag python-and-prometheus kylos101/python-with-prometheus:0.0.1
+docker push kylos101/python-with-prometheus:0.0.1
 
 # publish our image (so the cluster can pull it later)
 
