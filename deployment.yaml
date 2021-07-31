@@ -5,7 +5,7 @@ metadata:
  labels:
    app: python-with-prometheus
 spec:
- replicas: 1
+ replicas: 2
  selector:
    matchLabels:
      app: python-with-prometheus
