@@ -10,7 +10,7 @@
 
 1. Change `DOCKER_REPO` in [image-build.sh](./scripts/image-build.sh) to your public [Docker Repo])(https://hub.docker.com/), mine is `kylos101`.
 2. Replace `kylos101` in `template.spec.containers[0].image` with your Docker Repo in [deployment.yaml](.k8s_resources/../k8s_resources/deployment.yaml).
-3. Walk through the setup in `cluster-install.sh`.
+3. Walk through the setup in [cluster-install.sh](./scripts/cluster-install.sh).
 
 ## Test the app
 
