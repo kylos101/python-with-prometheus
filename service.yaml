@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: python-with-prometheus-svc
+  name: slytherin-svc
 spec:
   selector:
     app: python-with-prometheus
@@ -9,3 +9,8 @@ spec:
     - protocol: TCP
       port: 5000
       targetPort: 5000
+      name: app
+    - protocol: TCP
+      port: 8090
+      targetPort: 8090
+      name: metrics
