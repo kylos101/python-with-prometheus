@@ -1,4 +1,4 @@
-# Run a Python app on Kubernetes, Instrument it with Prometheus, and do Logging with Loki-Stack
+# Run a Python app on Kubernetes and instrument it with Prometheus
 
 ## Overview
 
