@@ -16,7 +16,6 @@ docker tag $IMAGE $DOCKER_REPO/python-with-prometheus:$VERSION
 docker push $DOCKER_REPO/python-with-prometheus:$VERSION
 
 # Use the new image
-sleep 3
 kubectl rollout restart deployments/python-with-prometheus
 
 popd
